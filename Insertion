@@ -1,0 +1,71 @@
+import java.util.Scanner;
+
+public class ActvClass {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Input the number of grades you want to enter: ");
+        int numOfGrades = sc.nextInt(); 
+        int[] arr = new int[numOfGrades];  // Dynamically allocate array based on user input
+        
+        int option = 0;
+
+        while (true) {
+            System.out.println("Input your grades: ");
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = sc.nextInt();
+            }
+
+            System.out.println("Input your choice from the following menu:");
+            System.out.println("1.Ascending 2.Descending 3.Exit");
+
+            option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    int len = arr.length;
+                    for (int i = 0; i < len - 1; i++) {
+                        for (int j = i + 1; j < len; j++) {
+                            if (arr[j] < arr[i]) {
+                                int temp = arr[j];
+                                arr[j] = arr[i];
+                                arr[i] = temp;
+                            }
+                        }
+                    }
+                    System.out.println("Ascending");
+                    for (int i = 0; i < len; i++) {
+                        System.out.print(arr[i] + " ");
+                    }
+                    System.out.println();  // Move to a new line for clarity
+                    break;
+
+                case 2:
+                    int des = arr.length;
+                    for (int i = 0; i < des - 1; i++) {
+                        for (int j = i + 1; j < des; j++) {
+                            if (arr[j] > arr[i]) {
+                                int temp = arr[j];
+                                arr[j] = arr[i];
+                                arr[i] = temp;
+                            }
+                        }
+                    }
+                    System.out.println("Descending");
+                    for (int i = 0; i < des; i++) {
+                        System.out.print(arr[i] + " ");
+                    }
+                    System.out.println();  // Move to a new line for clarity
+                    break;
+
+                case 3:
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+}
