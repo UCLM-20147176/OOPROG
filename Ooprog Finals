@@ -1,0 +1,40 @@
+class EmployeeException extends Exception {
+    public EmployeeException(String message) {
+        super(message);
+    }
+}
+
+class Employee {
+    private String idNum;
+    private double hourlyWage;
+
+    public Employee(String idNum, double hourlyWage) throws EmployeeException {
+        if (hourlyWage < 100.00 || hourlyWage > 400.00) {
+            throw new EmployeeException("Invalid hourly wage for employee ID " + idNum);
+        }
+        this.idNum = idNum;
+        this.hourlyWage = hourlyWage;
+        System.out.println("Employee with ID " + idNum + " successfully created.");
+    }
+
+    public String getIdNum() {
+        return idNum;
+    }
+
+    public double getHourlyWage() {
+        return hourlyWage;
+    }
+}
+
+public class EmployeeTest {
+    public static void main(String[] args) {
+        try {
+            Employee employee1 = new Employee("001", 150.00);
+            Employee employee2 = new Employee("002", 80.00); // This should throw an exception
+            Employee employee3 = new Employee("003", 300.00);
+            Employee employee4 = new Employee("004", 450.00); // This should throw an exception
+        } catch (EmployeeException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
