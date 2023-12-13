@@ -1,0 +1,119 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BankAccountGUI extends JFrame implements ActionListener {
+    private static final long serialVersionUID = 1L;
+    private JTextField tfFirstName, tfLastName, tfId, tfBalance, tfDeposit, tfWithdraw;
+    private JButton btnCreateAccount, btnDeposit, btnWithdraw, btnCheckBalance;
+    private JTextArea taOutput;
+    private BankAccount bankAccount;
+
+    public BankAccountGUI() {
+        JPanel p1 = new JPanel(new GridLayout(6, 2));
+        p1.add(new JLabel("First Name:"));
+        tfFirstName = new JTextField(10);
+        p1.add(tfFirstName);
+        p1.add(new JLabel("Last Name:"));
+        tfLastName = new JTextField(10);
+        p1.add(tfLastName);
+        p1.add(new JLabel("Id:"));
+        tfId = new JTextField(10);
+        p1.add(tfId);
+        p1.add(new JLabel("Balance:"));
+        tfBalance = new JTextField(10);
+        p1.add(tfBalance);
+        p1.add(new JLabel("Deposit:"));
+        tfDeposit = new JTextField(10);
+        p1.add(tfDeposit);
+        p1.add(new JLabel("Withdraw:"));
+        tfWithdraw = new JTextField(10);
+        p1.add(tfWithdraw);
+
+        JPanel p2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnCreateAccount = new JButton("Create Account");
+        btnCreateAccount.addActionListener(this);
+        p2.add(btnCreateAccount);
+        btnDeposit = new JButton("Deposit");
+        btnDeposit.addActionListener(this);
+        p2.add(btnDeposit);
+        btnWithdraw = new JButton("Withdraw");
+        btnWithdraw.addActionListener(this);
+        p2.add(btnWithdraw);
+        btnCheckBalance = new JButton("Check Balance");
+        btnCheckBalance.addActionListener(this);
+        p2.add(btnCheckBalance);
+
+        JPanel p3 = new JPanel(new BorderLayout());
+        p3.add(p1, BorderLayout.CENTER);
+        p3.add(p2, BorderLayout.SOUTH);
+
+        taOutput = new JTextArea(5, 20);
+        taOutput.setEditable(false);
+
+        add(p3, BorderLayout.NORTH);
+        add(new JScrollPane(taOutput), BorderLayout.CENTER);
+
+        setTitle("Bank Account GUI");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnCreateAccount) {
+            String firstName = tfFirstName.getText();
+            String lastName = tfLastName.getText();
+            String Id = tfId.getText();
+            float balance = Float.parseFloat(tfBalance.getText());
+            bankAccount = new BankAccount(firstName, lastName, Id, balance);
+            taOutput.setText("Account created for " + firstName + " " + lastName + ".\n");
+        } else if (e.getSource() == btnDeposit) {
+            float deposit = Float.parseFloat(tfDeposit.getText());
+            bankAccount.deposit(deposit);
+            taOutput.append("Deposit of $" + deposit + " successful. Current balance is $" + bankAccount.getBalance() + ".\n");
+        } else if (e.getSource() == btnWithdraw) {
+            float withdraw = Float.parseFloat(tfWithdraw.getText());
+            if (bankAccount.getBalance() >= withdraw) {
+                bankAccount.withdraw(withdraw);
+                taOutput.append("Withdrawal of $" + withdraw + " successful. Current balance is $" + bankAccount.getBalance() + ".\n");
+            } else {
+                taOutput.append("Insufficient funds.\n");
+            }
+        } else if (e.getSource() == btnCheckBalance) {
+            taOutput.append("Current balance is $" + bankAccount.getBalance() + ".\n");
+        }
+    }
+
+    public static void main(String[] args) {
+        new BankAccountGUI();
+    }
+}
+
+class BankAccount {
+    private String firstName;
+    private String lastName;
+    private String Id;
+    private float balance;
+
+    public BankAccount(String firstName, String lastName, String ssn, float balance) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.Id = Id;
+        this.balance = balance;
+    }
+
+    public void deposit(float amount) {
+        balance += amount;
+    }
+
+    public void withdraw(float amount) {
+        balance -= amount;
+    }
+
+    public float getBalance() {
+        return balance;
+    }
+}
+
